@@ -39,21 +39,27 @@ func NewStorage(uri string) ( *Storage, error) {
 }
 
 
-func (s * Storage) CreateIncident(inc entity.Incidents, longitude, latitude float64) (err error)  {
+func (s * Storage) CreateIncident(inc entity.Incidents, longitude, latitude string) (err error)  {
 
-	_, err = s.db.Exec(`insert into incidents.incidents (incident_id, reg_modified, long_name, node_name, lifecyclestate, longitude, latitude, zone) values ($1, $2, $3, $4, $5, $6, $7, $8)`, inc.ID, inc.REG_MODIFIED, inc.LONG_NAME, inc.NODE_NAME, inc.LIFECYCLESTATE, longitude, latitude, inc.Zone)
-
-	return
-}
-
-func (s * Storage) GetIncidents() (inc []entity.Incidents, err error)  {
-	err = s.db.Select(&inc, "select * from incidents.incidents")
+	_, err = s.db.Exec(`insert into incidents (incident_id, reg_modified, long_name, node_name, lifecyclestate, longitude, latitude, zone) values ($1, $2, $3, $4, $5, $6, $7, $8)`, inc.ID, inc.REG_MODIFIED, inc.LONG_NAME, inc.NODE_NAME, inc.LIFECYCLESTATE, longitude, latitude, inc.Zone)
 
 	return
 }
 
-func (s * Storage) RemoveIncident(id string) (err error) {
-	_, err = s.db.Exec("delete from incidents.incidents where incident_id = $1", id)
+func (s * Storage) GetIncidentsByZone(zone string) (inc []entity.PgIncidents, err error)  {
+	err = s.db.Select(&inc, "select * from incidents where zone=$1", zone)
+
+	return
+}
+
+func (s * Storage) GetIncidents( ) (inc []entity.PgIncidents, err error)  {
+	err = s.db.Select(&inc, "select * from incidents")
+
+	return
+}
+
+func (s * Storage) RemoveIncident(ip string) (err error) {
+	_, err = s.db.Exec("delete from incidents where long_name = $1", ip)
 
 	return
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"hpNNM/api"
 	"hpNNM/configs/taker"
 	"hpNNM/pg"
 	"hpNNM/rabbitmq"
@@ -34,11 +35,23 @@ func run() (error)  {
 		return errors.Wrap(err, "failed load config")
 	}
 
+
+
+
 	pg, err := pg.NewStorage(conf.PostgresURI)
 
 	if err != nil {
 		return errors.Wrap(err, "failed connect to db pg:")
 	}
+
+
+	server, err := api.NewServer(":8080", pg)
+
+	if err != nil {
+		return  errors.Wrap(err, "failed create server:")
+	}
+
+	defer server.Stop()
 
 	service := services.NewIncidentsService(pg)
 

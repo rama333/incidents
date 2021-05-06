@@ -4,15 +4,14 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"hackTTK/entity"
+	"hpNNM/entity"
 	"net/http"
 	"sync"
 	"time"
 )
 
 type DBStorage interface {
-	SetData(obj entity.Obj) ( err error)
-	SetEQUIPMENT(obj entity.EQUIPMENT) ( err error)
+	GetIncidents( ) (inc []entity.PgIncidents, err error)
 }
 
 
@@ -78,8 +77,7 @@ func NewServer(bindAddr string, storage DBStorage) (*Server, error) {
 
 	r := router.Group("api/v1")
 	{
-		r.POST("/object", server.PostObject)
-		r.POST("/equipment", server.PostEquipment)
+		r.GET("/incidents", server.GetIncidents)
 	}
 
 

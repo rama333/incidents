@@ -92,7 +92,7 @@ func (p *Publisher) Publish(rf []entity.Incidents) {
 
 func (p *Publisher) PublishIncidents(zones []string)  {
 	const (
-		tickPeriod = 5
+		tickPeriod = 60
 	)
 
 	ticker := time.NewTicker(time.Second * tickPeriod)
@@ -101,7 +101,7 @@ func (p *Publisher) PublishIncidents(zones []string)  {
 
 	for  {
 
-		<-ticker.C
+
 
 		p.log.Info("receiving incidents")
 
@@ -118,13 +118,15 @@ func (p *Publisher) PublishIncidents(zones []string)  {
 				continue
 			}
 
-			for _, incident := range incidents {
-				incident.SetZone(zone)
+
+			for i := range incidents {
+				incidents[i].SetZone(zone)
 			}
 
 			p.Publish(incidents)
 		}
 
+		<-ticker.C
 	}
 
 }
