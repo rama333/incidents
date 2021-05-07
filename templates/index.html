@@ -12,7 +12,6 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <link
             rel="stylesheet"
@@ -22,18 +21,12 @@
     <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 
 
-
 </head>
 <body>
 
-<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-
-<script src="assets/js/react.js"></script>
 
 
-
-<div id="mapid" style="width: 1400px; height: 500px;"></div>
+<div id="mapid" style="width: 1400px; height: 800px;"></div>
 <script>
 
 
@@ -62,12 +55,6 @@
             zoomOffset: -1
         }).addTo(mymap);
 
-        const search = new GeoSearch.GeoSearchControl({
-            provider: new GeoSearch.OpenStreetMapProvider(),
-        });
-
-        mymap.addControl(search);
-
         $.ajax({
             url: '/api/v1/incidents',
             method: 'get',
@@ -75,27 +62,6 @@
             success: function(data){
                 //alert(data[0].id);    /* выведет "Текст" */
                 for (key in data) {
-
-                    // alert(longitude);
-
-                    // L.marker([key.longitude, key.latitude]).addTo(mymap)
-                    //     .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-
-                    // alert(data[key].latitude);
-                    //
-                    // alert([data[key].longitude]);
-
-                    // L.polygon([
-                    //     [data[key].latitude, data[key].longitude],
-                    //     [data[key].latitude-0.01, data[key].longitude-0.01],
-                    //     [data[key].latitude-0.02, data[key].longitude-0.02],
-                    //
-                    // ]).addTo(mymap).bindPopup(data[key].node_name);
-
-                    // var popup = L.popup()
-                    //     .setLatLng([data[key].latitude, data[key].longitude])
-                    //     .setContent(data[key].node_name)
-                    //     .addTo(mymap);
 
                     L.circle([data[key].latitude, data[key].longitude], 20, {
                         color: 'red',
@@ -175,7 +141,4 @@
 
 
 </body>
-
-<div id="like_button_container"></div>
-
 </html>

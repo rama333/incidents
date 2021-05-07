@@ -29,4 +29,5 @@ type PgIncidents struct {
 	Longitude float64 `db:"longitude" json:"longitude"`
 	Latitude float64 `db:"latitude" json:"latitude"`
 	Services string `json:"services"`
+	Addres string `json:"addres"`
 }

@@ -45,7 +45,7 @@ func run() (error)  {
 	}
 
 
-	server, err := api.NewServer(":8080", pg)
+	server, err := api.NewServer(":4000", pg)
 
 	if err != nil {
 		return  errors.Wrap(err, "failed create server:")

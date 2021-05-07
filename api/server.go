@@ -28,21 +28,21 @@ type Server struct {
 
 }
 
-//func CORSMiddleware() gin.HandlerFunc {
-//	return func(c *gin.Context) {
-//		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-//		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-//		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-//		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-//
-//		if c.Request.Method == "OPTIONS" {
-//			c.AbortWithStatus(204)
-//			return
-//		}
-//
-//		c.Next()
-//	}
-//}
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
 
 
 
@@ -59,7 +59,7 @@ func NewServer(bindAddr string, storage DBStorage) (*Server, error) {
 
 	router.Use(gin.Recovery())
 	router.Use(gin.Logger())
-	//router.Use(CORSMiddleware())
+	router.Use(CORSMiddleware())
 
 	router.LoadHTMLGlob("../../templates/*")
 	router.Static("/assets", "../../assets")

@@ -23,7 +23,7 @@ type AddrByIP struct {
 }
 
 type Storage interface {
-	CreateIncident(inc entity.Incidents, longitude, latitude, services string) (err error)
+	CreateIncident(inc entity.Incidents, longitude, latitude, services, addres string) (err error)
 	GetIncidentsByZone(zone string) (inc []entity.PgIncidents, err error)
 	RemoveIncident(id string) (err error)
 }
@@ -131,7 +131,7 @@ func (s *IncidentsService) DataProcessing(incidents []entity.Incidents)  {
 
 		services := ser.Data[0].Spd + "/" +  ser.Data[0].Iptv + "/" + ser.Data[0].Sip
 
-		err := s.storage.CreateIncident(incident, g[0], g[1], services)
+		err := s.storage.CreateIncident(incident, g[0], g[1], services, ser.Data[0].Addr)
 
 		if err != nil {
 			logrus.Error(err)

@@ -8,7 +8,8 @@ CREATE TABLE incidents (
     longitude TEXT NOT NULL,
     latitude TEXT NOT NULL,
     zone TEXT NOT NULL,
-    services TEXT NOT NULL
+    services TEXT NOT NULL,
+    addres TEXT NOT NULL
 );
 
 
