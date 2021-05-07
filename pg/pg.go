@@ -39,9 +39,9 @@ func NewStorage(uri string) ( *Storage, error) {
 }
 
 
-func (s * Storage) CreateIncident(inc entity.Incidents, longitude, latitude string) (err error)  {
+func (s * Storage) CreateIncident(inc entity.Incidents, longitude, latitude, services string) (err error)  {
 
-	_, err = s.db.Exec(`insert into incidents (incident_id, reg_modified, long_name, node_name, lifecyclestate, longitude, latitude, zone) values ($1, $2, $3, $4, $5, $6, $7, $8)`, inc.ID, inc.REG_MODIFIED, inc.LONG_NAME, inc.NODE_NAME, inc.LIFECYCLESTATE, longitude, latitude, inc.Zone)
+	_, err = s.db.Exec(`insert into incidents (incident_id, reg_modified, long_name, node_name, lifecyclestate, longitude, latitude, zone, services) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, inc.ID, inc.REG_MODIFIED, inc.LONG_NAME, inc.NODE_NAME, inc.LIFECYCLESTATE, longitude, latitude, inc.Zone, services)
 
 	return
 }

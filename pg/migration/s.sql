@@ -7,7 +7,8 @@ CREATE TABLE incidents (
     lifecyclestate int NOT NULL,
     longitude TEXT NOT NULL,
     latitude TEXT NOT NULL,
-    zone TEXT NOT NULL
+    zone TEXT NOT NULL,
+    services TEXT NOT NULL
 );
 
 
