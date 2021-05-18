@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2c2fd516-3185-49a2-879b-d6787b833d0f" name="dev">
+        <fileTransfer rootFolder="/home/uadmin/Incidents" accessType="SFTP" host="192.168.143.179" port="22" sshConfigId="d3bd493e-943f-4393-9424-ea4ee9645e49" sshConfig="uadmin@192.168.143.179:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

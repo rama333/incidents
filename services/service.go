@@ -7,7 +7,7 @@ import (
 	"hpNNM/entity"
 	"hpNNM/geocoder"
 	"net/http"
-	"strings"
+	"strconv"
 )
 
 type AddrByIP struct {
@@ -120,18 +120,16 @@ func (s *IncidentsService) DataProcessing(incidents []entity.Incidents)  {
 
 		logrus.Info(ser.Data[0].Addr)
 
-		if len(geo.Response.GeoObjectCollection.FeatureMember) == 0 {
+		if geo.Properties.ResponseMetaData.SearchResponse.Found == 0 {
 			continue
 		}
 
-		logrus.Info(len(geo.Response.GeoObjectCollection.FeatureMember))
-		logrus.Info(geo.Response.GeoObjectCollection.FeatureMember[0].GeoObject.Point.Pos)
 
-		g := strings.Split(geo.Response.GeoObjectCollection.FeatureMember[0].GeoObject.Point.Pos, " ")
+		//g := strings.Split(geo.Response.GeoObjectCollection.FeatureMember[0].GeoObject.Point.Pos, " ")
 
 		services := ser.Data[0].Spd + "/" +  ser.Data[0].Iptv + "/" + ser.Data[0].Sip
 
-		err := s.storage.CreateIncident(incident, g[0], g[1], services, ser.Data[0].Addr)
+		err := s.storage.CreateIncident(incident, strconv.FormatFloat(geo.Features[0].Geometry.Coordinates[0], 'f', -1, 64), strconv.FormatFloat(geo.Features[0].Geometry.Coordinates[1], 'f', -1, 64), services, ser.Data[0].Addr)
 
 		if err != nil {
 			logrus.Error(err)

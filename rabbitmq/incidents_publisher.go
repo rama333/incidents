@@ -36,7 +36,7 @@ func NewPublisher(uri, exchange string, storage Storage) *Publisher {
 	client.Publish(publisher)
 
 	log := logrus.WithFields(logrus.Fields{
-		"subsystem":  "rmq_recognized_face_publisher",
+		"subsystem":  "incidents",
 	})
 
 	go func() {
@@ -77,7 +77,7 @@ func (p *Publisher) Stop() {
 func (p *Publisher) Publish(rf []entity.Incidents) {
 	fJSON, err := json.Marshal(rf)
 	if err != nil {
-		p.log.WithError(err).Error("failed to JSON marshal recognized face")
+		p.log.WithError(err).Error("failed to JSON marshal")
 		return
 	}
 
@@ -85,7 +85,7 @@ func (p *Publisher) Publish(rf []entity.Incidents) {
 		Body: fJSON,
 	})
 	if err != nil {
-		p.log.WithError(err).Error("failed to publish recognized face")
+		p.log.WithError(err).Error("failed to publish")
 		return
 	}
 }

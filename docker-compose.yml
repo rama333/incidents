@@ -5,13 +5,21 @@ services:
     restart: on-failure
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: ./docker/taker/Dockerfile
+    extra_hosts:
+      - "dockerhost:192.168.114.145"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "300m"
+        max-file: "10"
+  receiver:
+    restart: on-failure
+    build:
+      context: ./
+      dockerfile: ./docker/receiver/Dockerfile
     ports:
-      - 8090:8090
-      - 8091:8091
-    environment:
-      - PORT=8090
-      - DIAG_PORT=8091
+      - 4000:4000
     extra_hosts:
       - "dockerhost:192.168.114.145"
     logging:

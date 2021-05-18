@@ -29,13 +29,11 @@ func run() (error)  {
 		logrus.WithField("shutdown_time", time.Now().Sub(st)).Info("stopped")
 	}()
 
-	conf, err := taker.LoadConfig("/Users/ramilramilev/go/src/hpNNM/configs/taker/hp.conf")
+	conf, err := taker.LoadConfig("../../configs/taker/hp.conf")
 
 	if err != nil {
 		return errors.Wrap(err, "failed load config")
 	}
-
-
 
 
 	pg, err := pg.NewStorage(conf.PostgresURI)

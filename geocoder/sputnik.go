@@ -7,71 +7,41 @@ import (
 	"net/url"
 )
 
-type ApiSputnik struct {
-	Response struct {
-		GeoObjectCollection struct {
-			MetaDataProperty struct {
-				GeocoderResponseMetaData struct {
-					Request string `json:"request"`
-					Results string `json:"results"`
-					Found   string `json:"found"`
-				} `json:"GeocoderResponseMetaData"`
-			} `json:"metaDataProperty"`
-			FeatureMember []struct {
-				GeoObject struct {
-					MetaDataProperty struct {
-						GeocoderMetaData struct {
-							Precision string `json:"precision"`
-							Text      string `json:"text"`
-							Kind      string `json:"kind"`
-							Address   struct {
-								CountryCode string `json:"country_code"`
-								Formatted   string `json:"formatted"`
-								PostalCode  string `json:"postal_code"`
-								Components  []struct {
-									Kind string `json:"kind"`
-									Name string `json:"name"`
-								} `json:"Components"`
-							} `json:"Address"`
-							AddressDetails struct {
-								Country struct {
-									AddressLine        string `json:"AddressLine"`
-									CountryNameCode    string `json:"CountryNameCode"`
-									CountryName        string `json:"CountryName"`
-									AdministrativeArea struct {
-										AdministrativeAreaName string `json:"AdministrativeAreaName"`
-										Locality               struct {
-											LocalityName string `json:"LocalityName"`
-											Thoroughfare struct {
-												ThoroughfareName string `json:"ThoroughfareName"`
-												Premise          struct {
-													PremiseNumber string `json:"PremiseNumber"`
-													PostalCode    struct {
-														PostalCodeNumber string `json:"PostalCodeNumber"`
-													} `json:"PostalCode"`
-												} `json:"Premise"`
-											} `json:"Thoroughfare"`
-										} `json:"Locality"`
-									} `json:"AdministrativeArea"`
-								} `json:"Country"`
-							} `json:"AddressDetails"`
-						} `json:"GeocoderMetaData"`
-					} `json:"metaDataProperty"`
-					Name        string `json:"name"`
-					Description string `json:"description"`
-					BoundedBy   struct {
-						Envelope struct {
-							LowerCorner string `json:"lowerCorner"`
-							UpperCorner string `json:"upperCorner"`
-						} `json:"Envelope"`
-					} `json:"boundedBy"`
-					Point struct {
-						Pos string `json:"pos"`
-					} `json:"Point"`
-				} `json:"GeoObject"`
-			} `json:"featureMember"`
-		} `json:"GeoObjectCollection"`
-	} `json:"response"`
+
+type ApiYandex struct {
+	Type       string `json:"type"`
+	Properties struct {
+		ResponseMetaData struct {
+			SearchResponse struct {
+				Found     int         `json:"found"`
+				Display   string      `json:"display"`
+				BoundedBy [][]float64 `json:"boundedBy"`
+			} `json:"SearchResponse"`
+			SearchRequest struct {
+				Request   string      `json:"request"`
+				Skip      int         `json:"skip"`
+				Results   int         `json:"results"`
+				BoundedBy [][]float64 `json:"boundedBy"`
+			} `json:"SearchRequest"`
+		} `json:"ResponseMetaData"`
+	} `json:"properties"`
+	Features []struct {
+		Type     string `json:"type"`
+		Geometry struct {
+			Type        string    `json:"type"`
+			Coordinates []float64 `json:"coordinates"`
+		} `json:"geometry"`
+		Properties struct {
+			Name             string      `json:"name"`
+			Description      string      `json:"description"`
+			BoundedBy        [][]float64 `json:"boundedBy"`
+			GeocoderMetaData struct {
+				Precision string `json:"precision"`
+				Text      string `json:"text"`
+				Kind      string `json:"kind"`
+			} `json:"GeocoderMetaData"`
+		} `json:"properties"`
+	} `json:"features"`
 }
 
 //type ApiSputnik struct {
@@ -102,8 +72,8 @@ type ApiSputnik struct {
 //	} `json:"typo"`
 //}
 
-func Get(addr string) (*ApiSputnik) {
-	res, err := http.Get("https://geocode-maps.yandex.ru/1.x/?apikey=033ce4ee-c661-447c-aef9-d2d151eb9bbf&format=json&geocode=" + url.QueryEscape(addr))
+func Get(addr string) (*ApiYandex) {
+	res, err := http.Get("https://search-maps.yandex.ru/v1/?text="+ url.QueryEscape(addr) +"&lang=ru_RU&type=geo&results=1&apikey=3c91791f-30bf-4cfe-a23b-d8ab668daf8e")
 
 	if err != nil {
 		logrus.Error(err)
@@ -115,11 +85,11 @@ func Get(addr string) (*ApiSputnik) {
 	logrus.Info(res.Status)
 	logrus.Info(res.StatusCode)
 
-	var apiSputnik ApiSputnik
+	var apiYandex ApiYandex
 
 
-	json.NewDecoder(res.Body).Decode(&apiSputnik)
+	json.NewDecoder(res.Body).Decode(&apiYandex)
 
 
-	return &apiSputnik
+	return &apiYandex
 }

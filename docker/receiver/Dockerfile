@@ -20,6 +20,6 @@ RUN wget https://download.oracle.com/otn_software/linux/instantclient/instantcli
     echo /opt/oracle/instantclient* > /etc/ld.so.conf.d/oracle-instantclient.conf && \
     ldconfig
 
-WORKDIR /app/cmd/taker/
+WORKDIR /app/cmd/receiver/
 
 ENTRYPOINT CompileDaemon --build="go build main.go" --command=./main
